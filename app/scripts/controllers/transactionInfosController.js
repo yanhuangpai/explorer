@@ -36,8 +36,14 @@ angular.module('ethExplorer')
                     $scope.nonce = result.nonce;
                     $scope.to = result.to;
                     $scope.transactionIndex = result.transactionIndex;
-                    $scope.ethValue = result.value.c[0] / 10000; 
-                    $scope.txprice = (result.gas * result.gasPrice)/1000000000000000000 + " ETH";
+                    $scope.ethValue = result.value.c[0] / 10000 + " IFIE"; 
+                    $scope.txprice = (result.gas * result.gasPrice)/1000000000000000000 + " IFIE";
+                    if(result.to=="0x4d2f63d6826603b84d12c1c7dd33ab7f3bde7553") {
+                        var input = result.input;
+                        $scope.to = "0x"+input.substr(34,40);
+                        var raw_value = input.substr(74);
+                        $scope.ethValue = parseInt("0x"+raw_value, 16)/10000000000000000 + " IFI";
+                    }
                     if($scope.blockNumber!==undefined){
                         $scope.conf = number - $scope.blockNumber;
                         if($scope.conf===0){
