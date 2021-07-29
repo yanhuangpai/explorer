@@ -13,6 +13,10 @@ angular.module('ethExplorer', ['ngRoute','ui.bootstrap'])
                 templateUrl: 'views/blockInfos.html',
                 controller: 'blockInfosCtrl'
             }).
+            when('/txlist', {
+                templateUrl: 'views/txList.html',
+                controller: 'mainCtrl'
+            }).
             when('/transaction/:transactionId', {
                 templateUrl: 'views/transactionInfos.html',
                 controller: 'transactionInfosCtrl'

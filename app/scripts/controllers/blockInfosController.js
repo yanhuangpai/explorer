@@ -13,7 +13,6 @@ angular.module('ethExplorer')
                 getBlockInfos()
                     .then(function(result){
                         var number = web3.eth.blockNumber;
-
                     $scope.result = result;
 
                     if(result.hash!==undefined){

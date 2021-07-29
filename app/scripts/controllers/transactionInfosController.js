@@ -13,7 +13,7 @@ angular.module('ethExplorer')
                     .then(function(result){
                         //TODO Refactor this logic, asynchron calls + services....
                         var number = web3.eth.blockNumber;
-
+                    console.log(result);
                     $scope.result = result;
 
                     if(result.blockHash!==undefined){
