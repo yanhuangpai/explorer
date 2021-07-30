@@ -38,6 +38,12 @@ angular.module('ethExplorer')
                     $scope.transactionIndex = result.transactionIndex;
                     $scope.ethValue = result.value.c[0] / 10000 + " IFIE"; 
                     $scope.txprice = (result.gas * result.gasPrice)/1000000000000000000 + " IFIE";
+                    var status = web3.eth.getTransactionReceipt($scope.txId).status;
+                    if(status=="0x1"){
+                        $scope.status = "Sucess";
+                    } else {
+                        $scope.status = "Failed";
+                    }
                     if(result.to=="0x4d2f63d6826603b84d12c1c7dd33ab7f3bde7553") {
                         var input = result.input;
                         $scope.to = "0x"+input.substr(34,40);

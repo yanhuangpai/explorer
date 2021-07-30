@@ -25,7 +25,7 @@ angular.module('ethExplorer')
       var tx = web3.eth.getTransaction(trx[j]);
       tx.timestamp = age;
       var ss = web3.eth.getTransactionReceipt(trx[j]).status;
-      if(ss==0){
+      if(ss=="0x0"){
         tx.status = "Failed";
       } else {
         tx.status = "Success";
