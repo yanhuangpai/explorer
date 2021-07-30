@@ -14,7 +14,7 @@ angular.module('ethExplorer', ['ngRoute','ui.bootstrap'])
                 controller: 'blockInfosCtrl'
             }).
             when('/txlist', {
-                templateUrl: 'views/txList.html',
+                templateUrl: 'views/txlist.html',
                 controller: 'mainCtrl'
             }).
             when('/transaction/:transactionId', {
