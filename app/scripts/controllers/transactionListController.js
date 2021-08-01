@@ -1,26 +1,22 @@
-
 angular.module('ethExplorer')
- 
-    .controller('mainCtrl', function ($rootScope, $scope, $location, EventBus) {
-        console.log("mainCtrl");
+    .controller('transactionListCtrl', function ($rootScope, $scope, $location, EventBus) {
+
+        console.log("transactionListCtrl");
+        EventBus.Publish('timeClear', 'timeClear');
         var web3 = $rootScope.web3;
         var maxBlocks = 3; // TODO: into setting file or user select
         var maxTran = 3;
-        //ï¿½ï¿½ï¿½ï¿½Ê¼
-        var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //ï¿½ï¿½Ç°ï¿½ï¿½ï¿½
         if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
-        $scope.blocks = [];
+        //´¦Àí
+        var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
+    
         $scope.transactionsList = [];
-        while ($scope.blocks.length < maxBlocks) {
-            var bs = web3.eth.getBlock(blockNum - $scope.blocks.length);
-            $scope.blocks.push(bs);
-        }
         var x = 0;
         while ($scope.transactionsList.length < maxTran) {
             var iNumber = blockNum - x;
             var bs2 = web3.eth.getBlock(iNumber);
             var iAge = Math.floor(Date.now() / 1000) - bs2.timestamp;
-            var txCount = bs2.transactions.length;// web3.eth.getBlockTransactionCount(iNumber);
+            var txCount = web3.eth.getBlockTransactionCount(iNumber);
             x++;
             for (var blockIdx = 0; blockIdx < txCount; blockIdx++) {
                 var iTran = web3.eth.getTransactionFromBlock(iNumber, blockIdx);
@@ -39,28 +35,24 @@ angular.module('ethExplorer')
                         status: iStatus
                     }
                     $scope.transactionsList.push(transaction);
-
+                  
                 }
             }
         }
-        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-        var timerM = setInterval(() => {
-            //ï¿½ï¿½ï¿½ï¿½Ê¼
-            var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //ï¿½ï¿½Ç°ï¿½ï¿½ï¿½
-            if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
-            $scope.blocks = [];
-            $scope.transactionsList = [];
-            while ($scope.blocks.length < maxBlocks) {
-                var bs = web3.eth.getBlock(blockNum - $scope.blocks.length);
-                $scope.blocks.push(bs);
 
-            }
+
+
+        var timerT = setInterval(() => {
+            //´¦Àí
+            var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
+            if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
+            $scope.transactionsList = [];
             var x = 0;
             while ($scope.transactionsList.length < maxTran) {
                 var iNumber = blockNum - x;
                 var bs2 = web3.eth.getBlock(iNumber);
                 var iAge = Math.floor(Date.now() / 1000) - bs2.timestamp;
-                var txCount = bs2.transactions.length;// web3.eth.getBlockTransactionCount(iNumber);
+                var txCount = web3.eth.getBlockTransactionCount(iNumber);
                 x++;
                 for (var blockIdx = 0; blockIdx < txCount; blockIdx++) {
                     var iTran = web3.eth.getTransactionFromBlock(iNumber, blockIdx);
@@ -68,7 +60,6 @@ angular.module('ethExplorer')
                     if (iTran) {
                         var transaction = {
                             id: iTran.hash,
-                            blockNumber: iTran.blockNumber,
                             hash: iTran.hash,
                             from: iTran.from,
                             to: iTran.to,
@@ -79,27 +70,20 @@ angular.module('ethExplorer')
                             status: iStatus
                         }
                         $scope.transactionsList.push(transaction);
-
+                         
                     }
                 }
             }
-            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
-            console.log('reflash');
+            console.log('reflash')
             $scope.$apply();
-        }, 10000);
-
-        EventBus.Subscribe("timeClear", timeClear);
-        function timeClear(data) {
-            clearInterval(timerM);
-            timerM = null;
-
-        }
-
-
-
-
-
-
-
-
+        }, 10000);  
+ 
+        //ÇÐ»»Ò³ÃæÊ±Í£Ö¹×Ô¶¯Ë¢ÐÂ$routeChangeStart
+        $scope.$on('$destroy', function (angularEvent, current, previous) {
+           
+                clearInterval(timerT);
+                timerT = null;
+           
+        }); 
+       
     });
