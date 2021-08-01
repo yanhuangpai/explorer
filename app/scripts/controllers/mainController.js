@@ -1,12 +1,13 @@
 
 angular.module('ethExplorer')
+ 
     .controller('mainCtrl', function ($rootScope, $scope, $location, EventBus) {
         console.log("mainCtrl");
         var web3 = $rootScope.web3;
         var maxBlocks = 3; // TODO: into setting file or user select
         var maxTran = 3;
-        //´¦Àí¿ªÊ¼
-        var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
+        //ï¿½ï¿½ï¿½ï¿½Ê¼
+        var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //ï¿½ï¿½Ç°ï¿½ï¿½ï¿½
         if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
         $scope.blocks = [];
         $scope.transactionsList = [];
@@ -42,10 +43,10 @@ angular.module('ethExplorer')
                 }
             }
         }
-        //´¦Àí½áÊø
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         var timerM = setInterval(() => {
-            //´¦Àí¿ªÊ¼
-            var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
+            //ï¿½ï¿½ï¿½ï¿½Ê¼
+            var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //ï¿½ï¿½Ç°ï¿½ï¿½ï¿½
             if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
             $scope.blocks = [];
             $scope.transactionsList = [];
@@ -82,7 +83,7 @@ angular.module('ethExplorer')
                     }
                 }
             }
-            //´¦Àí½áÊø 
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
             console.log('reflash');
             $scope.$apply();
         }, 10000);

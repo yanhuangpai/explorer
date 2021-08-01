@@ -61,6 +61,10 @@ myApp.config(['$routeProvider',
                 templateUrl: 'views/blockInfos.html',
                 controller: 'blockInfosCtrl'
             }).
+            when('/txlist', {
+                templateUrl: 'views/txlist.html',
+                controller: 'mainCtrl'
+            }).
             when('/transaction/:transactionId', {
                 templateUrl: 'views/transactionInfos.html',
                 controller: 'transactionInfosCtrl'
@@ -75,10 +79,11 @@ myApp.config(['$routeProvider',
     }])
     .run(function ($rootScope) {
         var web3 = new Web3();
-
+ 
         //var eth_node_url = 'http://localhost:8545';
         var eth_node_url = 'http://18.163.112.243:8545'; // TODO: remote URL
         web3.setProvider(new web3.providers.HttpProvider(eth_node_url));
+  
         $rootScope.web3 = web3;
         function sleepFor(sleepDuration) {
             var now = new Date().getTime();
