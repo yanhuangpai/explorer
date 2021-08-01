@@ -1,46 +1,104 @@
+
 angular.module('ethExplorer')
-    .controller('mainCtrl', function ($rootScope, $scope, $location) {
+    .controller('mainCtrl', function ($rootScope, $scope, $location, EventBus) {
+        console.log("mainCtrl");
+        var web3 = $rootScope.web3;
+        var maxBlocks = 3; // TODO: into setting file or user select
+        var maxTran = 3;
+        //处理开始
+        var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //当前区块
+        if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
+        $scope.blocks = [];
+        $scope.transactionsList = [];
+        while ($scope.blocks.length < maxBlocks) {
+            var bs = web3.eth.getBlock(blockNum - $scope.blocks.length);
+            $scope.blocks.push(bs);
+        }
+        var x = 0;
+        while ($scope.transactionsList.length < maxTran) {
+            var iNumber = blockNum - x;
+            var bs2 = web3.eth.getBlock(iNumber);
+            var iAge = Math.floor(Date.now() / 1000) - bs2.timestamp;
+            var txCount = bs2.transactions.length;// web3.eth.getBlockTransactionCount(iNumber);
+            x++;
+            for (var blockIdx = 0; blockIdx < txCount; blockIdx++) {
+                var iTran = web3.eth.getTransactionFromBlock(iNumber, blockIdx);
+                var iStatus = web3.eth.getTransactionReceipt(iTran.hash).status == "0x0" ? "Failed" : "Success";
+                if (iTran) {
+                    var transaction = {
+                        id: iTran.hash,
+                        blockNumber: iTran.blockNumber,
+                        hash: iTran.hash,
+                        from: iTran.from,
+                        to: iTran.to,
+                        gas: iTran.gas,
+                        input: iTran.input,
+                        value: iTran.value,
+                        age: iAge,
+                        status: iStatus
+                    }
+                    $scope.transactionsList.push(transaction);
 
-	var web3 = $rootScope.web3;
-	var maxBlocks = 50; // TODO: into setting file or user select
-	var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10);
-	if (maxBlocks > blockNum) {
-	    maxBlocks = blockNum + 1;
-	}
+                }
+            }
+        }
+        //处理结束
+        var timerM = setInterval(() => {
+            //处理开始
+            var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //当前区块
+            if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
+            $scope.blocks = [];
+            $scope.transactionsList = [];
+            while ($scope.blocks.length < maxBlocks) {
+                var bs = web3.eth.getBlock(blockNum - $scope.blocks.length);
+                $scope.blocks.push(bs);
 
-	// get latest 50 blocks
-	$scope.blocks = [];
-	for (var i = 0; i < maxBlocks; ++i) {
-	    $scope.blocks.push(web3.eth.getBlock(blockNum - i));
-	}
-	
-        $scope.processRequest = function() {
-             var requestStr = $scope.ethRequest.split('0x').join('');
+            }
+            var x = 0;
+            while ($scope.transactionsList.length < maxTran) {
+                var iNumber = blockNum - x;
+                var bs2 = web3.eth.getBlock(iNumber);
+                var iAge = Math.floor(Date.now() / 1000) - bs2.timestamp;
+                var txCount = bs2.transactions.length;// web3.eth.getBlockTransactionCount(iNumber);
+                x++;
+                for (var blockIdx = 0; blockIdx < txCount; blockIdx++) {
+                    var iTran = web3.eth.getTransactionFromBlock(iNumber, blockIdx);
+                    var iStatus = web3.eth.getTransactionReceipt(iTran.hash).status == "0x0" ? "Failed" : "Success";
+                    if (iTran) {
+                        var transaction = {
+                            id: iTran.hash,
+                            blockNumber: iTran.blockNumber,
+                            hash: iTran.hash,
+                            from: iTran.from,
+                            to: iTran.to,
+                            gas: iTran.gas,
+                            input: iTran.input,
+                            value: iTran.value,
+                            age: iAge,
+                            status: iStatus
+                        }
+                        $scope.transactionsList.push(transaction);
 
-            if (requestStr.length === 40)
-              return goToAddrInfos(requestStr)
-            else if(requestStr.length === 64) {
-              if(/[0-9a-zA-Z]{64}?/.test(requestStr))
-                return goToTxInfos('0x'+requestStr)
-              else if(/[0-9]{1,7}?/.test(requestStr))
-                return goToBlockInfos(requestStr)
-            }else if(parseInt(requestStr) > 0)
-              return goToBlockInfos(parseInt(requestStr))
+                    }
+                }
+            }
+            //处理结束 
+            console.log('reflash');
+            $scope.$apply();
+        }, 10000);
 
-            alert('Don\'t know how to handle '+ requestStr)
-        };
+        EventBus.Subscribe("timeClear", timeClear);
+        function timeClear(data) {
+            clearInterval(timerM);
+            timerM = null;
 
-
-        function goToBlockInfos(requestStr) {
-            $location.path('/block/'+requestStr);
         }
 
-        function goToAddrInfos(requestStr) {
-            $location.path('/address/'+requestStr);
-        }
 
-         function goToTxInfos (requestStr) {
-             $location.path('/transaction/'+requestStr);
-        }
+
+
+
+
+
 
     });

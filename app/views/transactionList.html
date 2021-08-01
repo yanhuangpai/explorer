@@ -1,0 +1,29 @@
+<div class="container" style="padding-top: 50px;">
+
+    <h1 style="text-align:center;">Transactions List</h1>
+  
+    <table class="table table-striped" cellpadding="0" cellspacing="0" style="padding:0px;float:left;margin:0px;width:100%">
+        <tbody>
+            <tr>
+                <th>Tx Hash #</th>
+                <th>Block</th>
+                <th>Age</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Status</th>
+            </tr>
+            <tr data-ng-repeat="tx in transactionsList">
+                <td><a href="/#/transaction/{{tx.hash}}">{{tx.hash}}</a></td>
+                <td>{{tx.blockNumber}}</td>
+                <td>{{tx.age}}</td>
+                <td>{{tx.from}}</td>
+                <td>{{tx.to}}</td>
+                <td>{{tx.status}}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+
+
+
+</div>
