@@ -4,8 +4,8 @@ angular.module('ethExplorer')
     .controller('mainCtrl', function ($rootScope, $scope, $location, EventBus) {
         console.log("mainCtrl");
         var web3 = $rootScope.web3;
-        var maxBlocks = 3; // TODO: into setting file or user select
-        var maxTran = 3;
+        var maxBlocks = 15; // TODO: into setting file or user select
+        var maxTran = 15;
         //����ʼ
         var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //��ǰ���
         if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
