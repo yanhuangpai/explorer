@@ -1,15 +1,109 @@
 angular.module('ethExplorer')
-    .controller('transactionListCtrl', function ($rootScope, $scope, $location, EventBus) {
+    .controller('transactionListCtrl', function ($rootScope, $scope, $http, $location, EventBus) {
 
         console.log("transactionListCtrl");
         EventBus.Publish('timeClear', 'timeClear');
         var web3 = $rootScope.web3;
+        //交易起止区块
+        var maxTranBlock = parseInt(web3.eth.blockNumber, 10); //当前区块;
+        var minTranBlock = maxTranBlock - 100;
+
+        $scope.transactionsList = [];
+
+        $http({
+            method: 'GET',
+            url: 'http://3.36.26.51:7000/v1/transaction?fromBlock=' + minTranBlock + '&toBlock=' + maxTranBlock,
+            headers: {
+                'APIKey': '0x51d9a52d29c99b6bde0f118fdd829097d18a9f041fc6fa661ace13cb93b7f389'
+            }
+        }).then(function successCallback(response) {
+
+            var trans = response.data.transactions;
+            for (var blockIdx = 0; blockIdx < trans.length; blockIdx++) {
+                var iTran = trans[0];
+                var iStatus = iTran.state == "1" ? "Success" : "Failed";
+                if (iTran) {
+                    var transaction = {
+                        id: iTran.hash,
+                        blockNumber: iTran.blockNumber,
+                        hash: iTran.hash,
+                        from: iTran.from,
+                        to: iTran.to,
+                        gas: iTran.gas,
+                        input: iTran.input,
+                        value: iTran.value,
+                        age: iTran.age,
+                        status: iStatus
+                    }
+                    $scope.transactionsList.push(transaction);
+                }
+            }
+            $scope.transactionsList = response.data.transactions;
+        }, function errorCallback(response) {
+            console.log("transactions:error");
+        });
+
+        //处理结束
+        var timerM = setInterval(() => {
+
+            //交易起止区块
+            maxTranBlock = parseInt(web3.eth.blockNumber, 10); //当前区块;
+            minTranBlock = maxTranBlock - 100;
+
+            $scope.transactionsList = [];
+
+            $http({
+                method: 'GET',
+                url: 'http://3.36.26.51:7000/v1/transaction?fromBlock=' + minTranBlock + '&toBlock=' + maxTranBlock,
+                headers: {
+                    'APIKey': '0x51d9a52d29c99b6bde0f118fdd829097d18a9f041fc6fa661ace13cb93b7f389'
+                }
+            }).then(function successCallback(response) {
+
+                var trans = response.data.transactions;
+                for (var blockIdx = 0; blockIdx < trans.length; blockIdx++) {
+                    var iTran = trans[0];
+                    var iStatus = iTran.state == "1" ? "Success" : "Failed";
+                    if (iTran) {
+                        var transaction = {
+                            id: iTran.hash,
+                            blockNumber: iTran.blockNumber,
+                            hash: iTran.hash,
+                            from: iTran.from,
+                            to: iTran.to,
+                            gas: iTran.gas,
+                            input: iTran.input,
+                            value: iTran.value,
+                            age: iTran.age,
+                            status: iStatus
+                        }
+                        $scope.transactionsList.push(transaction);
+                    }
+                    if ($scope.transactionsList.length > 15) break;
+                }
+                $scope.transactionsList = response.data.transactions;
+            }, function errorCallback(response) {
+                console.log("transactions:error");
+            });
+            //处理结束 
+            console.log('reflash');
+            $scope.$apply();
+        }, 10000);
+        //切换页面时停止自动刷新$routeChangeStart
+        $scope.$on('$destroy', function (angularEvent, current, previous) {
+
+            clearInterval(timerT);
+            timerT = null;
+
+        });
+        return;
+        //-------------------------------------下面的不要web3
         var maxBlocks = 3; // TODO: into setting file or user select
         var maxTran = 3;
         if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
         //处理
         var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //当前区块
-    
+
         $scope.transactionsList = [];
         var x = 0;
         while ($scope.transactionsList.length < maxTran) {
@@ -35,7 +129,7 @@ angular.module('ethExplorer')
                         status: iStatus
                     }
                     $scope.transactionsList.push(transaction);
-                  
+
                 }
             }
         }
@@ -70,20 +164,14 @@ angular.module('ethExplorer')
                             status: iStatus
                         }
                         $scope.transactionsList.push(transaction);
-                         
+
                     }
                 }
             }
             console.log('reflash')
             $scope.$apply();
-        }, 10000);  
- 
-        //切换页面时停止自动刷新$routeChangeStart
-        $scope.$on('$destroy', function (angularEvent, current, previous) {
-           
-                clearInterval(timerT);
-                timerT = null;
-           
-        }); 
-       
+        }, 10000);
+
+
+
     });
