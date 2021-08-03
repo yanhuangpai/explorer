@@ -4,11 +4,13 @@ angular.module('ethExplorer')
         console.log("transactionListCtrl");
         EventBus.Publish('timeClear', 'timeClear');
         var web3 = $rootScope.web3;
-        //½»Ò×ÆğÖ¹Çø¿é
-        var maxTranBlock = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é;
+ 
+        //äº¤æ˜“èµ·æ­¢åŒºå—
+        var maxTranBlock = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå— ;
         var minTranBlock = maxTranBlock - 100;
-
+       
         $scope.transactionsList = [];
+        
 
         $http({
             method: 'GET',
@@ -17,11 +19,11 @@ angular.module('ethExplorer')
                 'APIKey': '0x51d9a52d29c99b6bde0f118fdd829097d18a9f041fc6fa661ace13cb93b7f389'
             }
         }).then(function successCallback(response) {
-
+  
             var trans = response.data.transactions;
-            for (var blockIdx = 0; blockIdx < trans.length; blockIdx++) {
-                var iTran = trans[0];
-                var iStatus = iTran.state == "1" ? "Success" : "Failed";
+            for (var blockIdx = trans.length - 1; blockIdx > 0; blockIdx--) {
+                var iTran = trans[blockIdx];
+
                 if (iTran) {
                     var transaction = {
                         id: iTran.hash,
@@ -33,25 +35,25 @@ angular.module('ethExplorer')
                         input: iTran.input,
                         value: iTran.value,
                         age: iTran.age,
-                        status: iStatus
+                        status: iTran.state == 1 ? "Success" : "Failed"
                     }
                     $scope.transactionsList.push(transaction);
                 }
+                if ($scope.transactionsList.length > 15) break;
             }
-            $scope.transactionsList = response.data.transactions;
+
         }, function errorCallback(response) {
             console.log("transactions:error");
         });
 
-        //´¦Àí½áÊø
+        //å¤„ç†ç»“æŸ
         var timerM = setInterval(() => {
-
-            //½»Ò×ÆğÖ¹Çø¿é
-            maxTranBlock = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é;
+ 
+            maxTranBlock = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå—
             minTranBlock = maxTranBlock - 100;
-
+           
             $scope.transactionsList = [];
-
+             
             $http({
                 method: 'GET',
                 url: 'http://3.36.26.51:7000/v1/transaction?fromBlock=' + minTranBlock + '&toBlock=' + maxTranBlock,
@@ -61,10 +63,12 @@ angular.module('ethExplorer')
             }).then(function successCallback(response) {
 
                 var trans = response.data.transactions;
-                for (var blockIdx = 0; blockIdx < trans.length; blockIdx++) {
-                    var iTran = trans[0];
-                    var iStatus = iTran.state == "1" ? "Success" : "Failed";
+                for (var blockIdx = trans.length - 1; blockIdx > 0; blockIdx--) {
+                    var iTran = trans[blockIdx];
                     if (iTran) {
+                        var istatus = iTran.state == 1 ? "Success" : "Failed";
+              
+
                         var transaction = {
                             id: iTran.hash,
                             blockNumber: iTran.blockNumber,
@@ -75,21 +79,21 @@ angular.module('ethExplorer')
                             input: iTran.input,
                             value: iTran.value,
                             age: iTran.age,
-                            status: iStatus
+                            status: iTran.state == 1 ? "Success" : "Failed"
                         }
                         $scope.transactionsList.push(transaction);
                     }
                     if ($scope.transactionsList.length > 15) break;
                 }
-                $scope.transactionsList = response.data.transactions;
+
             }, function errorCallback(response) {
                 console.log("transactions:error");
             });
-            //´¦Àí½áÊø 
+            //å¤„ç†ç»“æŸ 
             console.log('reflash');
             $scope.$apply();
         }, 10000);
-        //ÇĞ»»Ò³ÃæÊ±Í£Ö¹×Ô¶¯Ë¢ĞÂ$routeChangeStart
+        //åˆ‡æ¢é¡µé¢æ—¶åœæ­¢è‡ªåŠ¨åˆ·æ–°$routeChangeStart
         $scope.$on('$destroy', function (angularEvent, current, previous) {
 
             clearInterval(timerT);
@@ -97,12 +101,12 @@ angular.module('ethExplorer')
 
         });
         return;
-        //-------------------------------------ÏÂÃæµÄ²»Òªweb3
+        //-------------------------------------ä¸‹é¢çš„ä¸è¦web3
         var maxBlocks = 3; // TODO: into setting file or user select
         var maxTran = 3;
         if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
-        //´¦Àí
-        var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
+        //å¤„ç†
+        var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå—
 
         $scope.transactionsList = [];
         var x = 0;
@@ -137,8 +141,8 @@ angular.module('ethExplorer')
 
 
         var timerT = setInterval(() => {
-            //´¦Àí
-            var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
+            //å¤„ç†
+            var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå—
             if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
             $scope.transactionsList = [];
             var x = 0;

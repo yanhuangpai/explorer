@@ -13,15 +13,14 @@
                 <th>Status</th>
             </tr>
             <tr data-ng-repeat="tx in transactionsList">
-            <tr data-ng-repeat="tx in transactionsList">
+       
                 <td style=" width:20%;word-break: break-all"><a href="/#/transaction/{{tx.hash}}">{{tx.hash}}</a></td>
                 <td style=" width:5%;word-break: break-all">{{tx.blockNumber}}</td>
-                <td style=" width:5%;word-break: break-all">{{tx.age}}days</td>
+                <td style=" width:5%;word-break: break-all">{{tx.age}}second</td>
                 <td style=" width:20%;word-break: break-all">{{tx.from}}</td>
                 <td style=" width:20%;word-break: break-all">{{tx.to}}</td>
                 <td style=" width:5%;word-break: break-all">{{tx.status}}</td>
-            </tr>
-            </tr>
+            </tr> 
         </tbody>
     </table>
 
