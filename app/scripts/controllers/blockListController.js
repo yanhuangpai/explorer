@@ -4,9 +4,12 @@ angular.module('ethExplorer')
         console.log("blockListCtrl");
         EventBus.Publish('timeClear', 'timeClear');
         var web3 = $rootScope.web3;
-        var maxblock = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
+        //èµ·æ­¢åŒºå—
+        var maxblock = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå— 
         var minBlock = maxblock - 15;
+        
         $scope.blocks = [];
+      
         $http({
             method: 'GET',
             url: 'http://3.36.26.51:7000/v1/block?fromBlock=' + minBlock + '&toBlock=' + maxblock,
@@ -14,17 +17,22 @@ angular.module('ethExplorer')
                 'APIKey': '0x51d9a52d29c99b6bde0f118fdd829097d18a9f041fc6fa661ace13cb93b7f389'
             }
         }).then(function successCallback(response) {
-            $scope.blocks = response.data.blocks;
+            var bk = response.data.blocks;
+            for (var blockIdx = bk.length - 1; blockIdx > 0; blockIdx--) {
+                $scope.blocks.push(bk[blockIdx]);
+                if ($scope.blocks.length > 15) break;
+            }
         }, function errorCallback(response) {
             console.log("Block:error");
         });
+         
 
-        var timerB = setInterval(() => {
-
-            //ÕâÀïÊÇÏëÒª¶¨Ê±Ë¢ÐÂµÄÂß¼­
-            maxblock = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
-            minBlock = maxblock - 15;
+        //å¤„ç†ç»“æŸ
+        var timerM = setInterval(() => {
+            maxblock = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå—
+            minBlock = maxblock - 15; 
             $scope.blocks = [];
+            $scope.transactionsList = [];
             $http({
                 method: 'GET',
                 url: 'http://3.36.26.51:7000/v1/block?fromBlock=' + minBlock + '&toBlock=' + maxblock,
@@ -32,16 +40,20 @@ angular.module('ethExplorer')
                     'APIKey': '0x51d9a52d29c99b6bde0f118fdd829097d18a9f041fc6fa661ace13cb93b7f389'
                 }
             }).then(function successCallback(response) {
+                var bk = response.data.blocks;
+                for (var blockIdx = bk.length - 1; blockIdx > 0; blockIdx--) {
 
-                $scope.blocks = response.data.blocks;
+                    $scope.blocks.push(bk[blockIdx]);
+                }
             }, function errorCallback(response) {
                 console.log("Block:error");
-            });
-            $scope.$apply();
+            }); 
+            //å¤„ç†ç»“æŸ 
             console.log('reflash');
+            $scope.$apply();
         }, 10000);
 
-        //ÇÐ»»Ò³ÃæÊ±Í£Ö¹×Ô¶¯Ë¢ÐÂ$routeChangeStart
+        //åˆ‡æ¢é¡µé¢æ—¶åœæ­¢è‡ªåŠ¨åˆ·æ–°$routeChangeStart
         $scope.$on('$destroy', function (angularEvent, current, previous) {
             clearInterval(timerB);
             timerB = null;
@@ -49,13 +61,13 @@ angular.module('ethExplorer')
         });
 
         return;
-        //-------------------------------------ÏÂÃæµÄ²»Òªweb3
+        //-------------------------------------ä¸‹é¢çš„ä¸è¦web3
         var web3 = $rootScope.web3;
         var maxBlocks = 3; // TODO: into setting file or user select
         var maxTran = 3;
         if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
-        //´¦Àí
-        var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
+        //å¤„ç†
+        var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå—
         if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
         var transactionCount = 0;
         $scope.blocks = [];
@@ -67,8 +79,8 @@ angular.module('ethExplorer')
 
         var timerB = setInterval(() => {
 
-            //ÕâÀïÊÇÏëÒª¶¨Ê±Ë¢ÐÂµÄÂß¼­
-            var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
+            //è¿™é‡Œæ˜¯æƒ³è¦å®šæ—¶åˆ·æ–°çš„é€»è¾‘
+            var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå—
             if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
             var transactionCount = 0;
             $scope.blocks = [];
