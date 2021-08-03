@@ -1,7 +1,7 @@
 <div class="container" style="padding-top: 50px;">
 
-    <h1 style="text-align:center;">Transactions List</h1>
-  
+    <h1 style="text-align:center;">Transactions</h1>
+
     <table class="table table-striped" cellpadding="0" cellspacing="0" style="padding:0px;float:left;margin:0px;width:100%">
         <tbody>
             <tr>
@@ -13,16 +13,18 @@
                 <th>Status</th>
             </tr>
             <tr data-ng-repeat="tx in transactionsList">
-                <td><a href="/#/transaction/{{tx.hash}}">{{tx.hash}}</a></td>
-                <td>{{tx.blockNumber}}</td>
-                <td>{{tx.age}}</td>
-                <td>{{tx.from}}</td>
-                <td>{{tx.to}}</td>
-                <td>{{tx.status}}</td>
+            <tr data-ng-repeat="tx in transactionsList">
+                <td style=" width:20%;word-break: break-all"><a href="/#/transaction/{{tx.hash}}">{{tx.hash}}</a></td>
+                <td style=" width:5%;word-break: break-all">{{tx.blockNumber}}</td>
+                <td style=" width:5%;word-break: break-all">{{tx.age}}days</td>
+                <td style=" width:20%;word-break: break-all">{{tx.from}}</td>
+                <td style=" width:20%;word-break: break-all">{{tx.to}}</td>
+                <td style=" width:5%;word-break: break-all">{{tx.status}}</td>
+            </tr>
             </tr>
         </tbody>
     </table>
-    
+
 
 
 

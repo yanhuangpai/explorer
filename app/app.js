@@ -1,7 +1,10 @@
 'use strict';
 
 var myApp = angular.module('ethExplorer', ['ngRoute', 'ui.bootstrap']);
-
+//myApp.config(function ($httpProvider) {
+//    $httpProvider.defaults.headers.common['APIKey'] = '0x51d9a52d29c99b6bde0f118fdd829097d18a9f041fc6fa661ace13cb93b7f389';
+//    console.log($httpProvider.defaults.headers.common)
+//})
 myApp.service("EventBus", [function () {
     var subscriberList = [];
     function _subscribe(evt, fn) {
@@ -39,6 +42,8 @@ myApp.service("EventBus", [function () {
 
 myApp.config(['$routeProvider',
     function ($routeProvider) {
+        // $routeProvider.defaults.headers.common = { 'APIKey': '0x51d9a52d29c99b6bde0f118fdd829097d18a9f041fc6fa661ace13cb93b7f389' }
+
         $routeProvider.
             when('/', {
                 templateUrl: 'views/main.html',
@@ -75,9 +80,11 @@ myApp.config(['$routeProvider',
             }).
             otherwise({
                 redirectTo: '/'
-            });
+            })
+
     }])
     .run(function ($rootScope) {
+
         var web3 = new Web3();
  
         //var eth_node_url = 'http://localhost:8545';
