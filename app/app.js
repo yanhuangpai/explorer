@@ -1,7 +1,10 @@
 'use strict';
 
 var myApp = angular.module('ethExplorer', ['ngRoute', 'ui.bootstrap']);
-
+//myApp.config(function ($httpProvider) {
+//    $httpProvider.defaults.headers.common['APIKey'] = '0x51d9a52d29c99b6bde0f118fdd829097d18a9f041fc6fa661ace13cb93b7f389';
+//    console.log($httpProvider.defaults.headers.common)
+//})
 myApp.service("EventBus", [function () {
     var subscriberList = [];
     function _subscribe(evt, fn) {
@@ -39,6 +42,8 @@ myApp.service("EventBus", [function () {
 
 myApp.config(['$routeProvider',
     function ($routeProvider) {
+        // $routeProvider.defaults.headers.common = { 'APIKey': '0x51d9a52d29c99b6bde0f118fdd829097d18a9f041fc6fa661ace13cb93b7f389' }
+
         $routeProvider.
             when('/', {
                 templateUrl: 'views/main.html',
@@ -61,6 +66,10 @@ myApp.config(['$routeProvider',
                 templateUrl: 'views/blockInfos.html',
                 controller: 'blockInfosCtrl'
             }).
+            when('/txlist', {
+                templateUrl: 'views/txlist.html',
+                controller: 'mainCtrl'
+            }).
             when('/transaction/:transactionId', {
                 templateUrl: 'views/transactionInfos.html',
                 controller: 'transactionInfosCtrl'
@@ -71,14 +80,17 @@ myApp.config(['$routeProvider',
             }).
             otherwise({
                 redirectTo: '/'
-            });
+            })
+
     }])
     .run(function ($rootScope) {
-        var web3 = new Web3();
 
+        var web3 = new Web3();
+ 
         //var eth_node_url = 'http://localhost:8545';
         var eth_node_url = 'http://18.163.112.243:8545'; // TODO: remote URL
         web3.setProvider(new web3.providers.HttpProvider(eth_node_url));
+  
         $rootScope.web3 = web3;
         function sleepFor(sleepDuration) {
             var now = new Date().getTime();

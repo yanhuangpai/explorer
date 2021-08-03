@@ -1,8 +1,8 @@
 <div class="container" style="padding-top: 50px;">
 
-    <h1 style="text-align:center;">Block List</h1>
-    
- 
+    <h1 style="text-align:center;">Blocks</h1>
+
+
     <table class="table table-striped" cellpadding="0" cellspacing="0" style="padding:0px;float:left;margin:0px;width:100%">
         <tbody>
             <tr>
@@ -13,7 +13,7 @@
             </tr>
             <tr data-ng-repeat="i in blocks">
                 <td><a href="/#/block/{{i.number}}">{{i.number}}</a></td>
-                <td>{{i.transactions.length}}</td>
+                <td>{{i.txNum}}</td>
                 <td>{{i.size}}</td>
                 <td>{{i.timestamp}}</td>
             </tr>

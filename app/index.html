@@ -17,20 +17,27 @@
 
 </head>
 <body>
-
+<<<<<<< HEAD
+    <div class="navbar navbar-inverse navbar-static-top">
+=======
+ 
     <nav class="navbar navbar-inverse navbar-fixed-top">
+>>>>>>> f8ad5d10bab2de7847a93ebc48314decda045887
         <div class="container">
             <div class="navbar-header">
-                <span class="icon-bar"></span><a href="/#/" class="navbar-brand">Infinity Explorer</a>
+                <button type="button" class="navbar-toggle collapsed"
+                        data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/#/" class="navbar-brand">Infinity Explorer</a>
 
-                <a href="/#/main/" class="navbar-brand">Home</a>
-                <a href="/#/transactionList/" class="navbar-brand">Transactions</a>
-                <a href="/#/blockList/" class="navbar-brand">Blocks</a>
-                <a href="/#/signerList/" class="navbar-brand">Signers</a>
             </div>
-            <div id="navbar" class="navbar-collapse collapse">
+            <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-
                     <!--ng-controller="mainCtrl"-->
                     <form name="search_form" ng-controller="searchCtrl" ng-submit="processRequest()" class="navbar-form navbar-right">
                         <div class="form-group">
@@ -38,10 +45,24 @@
                         </div>
                         <button type="submit" class="btn btn-success">Search</button>
                     </form>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-sub  pull-right">
+                    <li>
+                        <a href="/#/main/" class="navbar-brand">Home</a>
+                    </li>
+                    <li>
+                        <a href="/#/transactionList/" class="navbar-brand">Transactions</a>
+                    </li>
+                    <li>
+                        <a href="/#/blockList/" class="navbar-brand">Blocks</a>
+                    </li>
+                    <li><a href="/#/signerList/" class="navbar-brand">Signers</a></li>
                 </ul>
             </div>
         </div>
-    </nav>
+    </div>
+
 
 
 
