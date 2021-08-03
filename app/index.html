@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if lt IE 7]>      <html lang="en" ng-app="ethExplorer" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html lang="en" ng-app="ethExplorer" class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html lang="en" ng-app="ethExplorer" class="no-js lt-ie9"> <![endif]-->
@@ -17,12 +17,7 @@
 
 </head>
 <body>
-<<<<<<< HEAD
-    <div class="navbar navbar-inverse navbar-static-top">
-=======
- 
     <nav class="navbar navbar-inverse navbar-fixed-top">
->>>>>>> f8ad5d10bab2de7847a93ebc48314decda045887
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed"
@@ -61,64 +56,63 @@
                 </ul>
             </div>
         </div>
-    </div>
+
+    </nav>
 
 
 
+        <div ng-view></div>
 
-    <div ng-view></div>
+        <!--Libs-->
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script> -->
+        <script src="scripts/controllers/angular.min.js"></script>
+        <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+        <script src="bower_components/angular-route/angular-route.js"></script>
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
+        <script src="scripts/controllers/jquery.min.js"></script>
+        <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> -->
+        <script src="scripts/controllers/bootstrap.min.js"></script>
+        <!--Core-->
+        <script src="app.js"></script>
 
-    <!--Libs-->
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script> -->
-    <script src="scripts/controllers/angular.min.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
-    <script src="scripts/controllers/jquery.min.js"></script>
-    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> -->
-    <script src="scripts/controllers/bootstrap.min.js"></script>
-    <!--Core-->
-    <script src="app.js"></script>
+        <!--Controllers-->
+        <script src="scripts/controllers/mainController.js"></script>
+        <script src="scripts/controllers/addressInfoController.js"></script>
+        <script src="scripts/controllers/blockInfosController.js"></script>
+        <script src="scripts/controllers/transactionInfosController.js"></script>
 
-    <!--Controllers-->
-    <script src="scripts/controllers/mainController.js"></script>
-    <script src="scripts/controllers/addressInfoController.js"></script>
-    <script src="scripts/controllers/blockInfosController.js"></script>
-    <script src="scripts/controllers/transactionInfosController.js"></script>
+        <script src="scripts/controllers/blockListController.js"></script>
+        <script src="scripts/controllers/transactionListController.js"></script>
+        <script src="scripts/controllers/searchController.js"></script>
+        <!--Services-->
+        <div id="connectwarning" class="modal fade" role="dialog">
+            <div class="modal-dialog">
 
-    <script src="scripts/controllers/blockListController.js"></script>
-    <script src="scripts/controllers/transactionListController.js"></script>
-    <script src="scripts/controllers/signerListController.js"></script>
-    <script src="scripts/controllers/searchController.js"></script>
-    <!--Services-->
-    <div id="connectwarning" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <center>
-                    <div class="modal-header">
-                        <h4 class="modal-title">Allow Access to Geth and Refresh the Page</h4>
-                    </div>
-                    <div class="modal-body">
-                        <code><p id="modaltext"></p></code>
-                    </div>
-                </center>
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <center>
+                        <div class="modal-header">
+                            <h4 class="modal-title">Allow Access to Geth and Refresh the Page</h4>
+                        </div>
+                        <div class="modal-body">
+                            <code><p id="modaltext"></p></code>
+                        </div>
+                    </center>
+                </div>
             </div>
         </div>
-    </div>
 
 
-    <div class="footer" style="bottom: 0px;text-align: center;background-color: white; width:100%;">
-        <footer>
-            <hr>
-            <p>
-                © Infinity 2021 </a>
-            </p>
-        </footer>
-    </div>
-    <script>
-        $("#modaltext").text('geth --rpc --rpccorsdomain "' + window.location.protocol + '//' + window.location.host + '"');
-    </script>
+        <div class="footer" style="bottom: 0px;text-align: center;background-color: white; width:100%;">
+            <footer>
+                <hr>
+                <p>
+                    © Infinity 2021 </a>
+                </p>
+            </footer>
+        </div>
+        <script>
+            $("#modaltext").text('geth --rpc --rpccorsdomain "' + window.location.protocol + '//' + window.location.host + '"');
+        </script>
 </body>
 </html>
