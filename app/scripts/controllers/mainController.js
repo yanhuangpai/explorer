@@ -120,7 +120,7 @@ angular.module('ethExplorer').controller('mainCtrl', function ($rootScope, $scop
         //¥¶¿ÌΩ· ¯ 
         console.log('reflash');
         $scope.$apply();
-    }, 10000);
+    }, 60000);
 
     EventBus.Subscribe("timeClear", timeClear);
     function timeClear(data) {

@@ -174,7 +174,7 @@ angular.module('ethExplorer')
             }
             console.log('reflash')
             $scope.$apply();
-        }, 10000);
+        }, 60000);
 
 
 
