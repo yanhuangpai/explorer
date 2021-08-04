@@ -4,8 +4,8 @@ angular.module('ethExplorer')
         console.log("blockListCtrl");
         EventBus.Publish('timeClear', 'timeClear');
         var web3 = $rootScope.web3;
-        //èµ·æ­¢åŒºå—
-        var maxblock = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå— 
+        //ÆðÖ¹Çø¿é
+        var maxblock = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é 
         var minBlock = maxblock - 15;
         
         $scope.blocks = [];
@@ -27,12 +27,12 @@ angular.module('ethExplorer')
         });
          
 
-        //å¤„ç†ç»“æŸ
+        //´¦Àí½áÊø
         var timerM = setInterval(() => {
-            maxblock = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå—
+            maxblock = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
             minBlock = maxblock - 15; 
             $scope.blocks = [];
-            $scope.transactionsList = [];
+           
             $http({
                 method: 'GET',
                 url: 'http://3.36.26.51:7000/v1/block?fromBlock=' + minBlock + '&toBlock=' + maxblock,
@@ -48,12 +48,12 @@ angular.module('ethExplorer')
             }, function errorCallback(response) {
                 console.log("Block:error");
             }); 
-            //å¤„ç†ç»“æŸ 
+            //´¦Àí½áÊø 
             console.log('reflash');
             $scope.$apply();
         }, 10000);
 
-        //åˆ‡æ¢é¡µé¢æ—¶åœæ­¢è‡ªåŠ¨åˆ·æ–°$routeChangeStart
+        //ÇÐ»»Ò³ÃæÊ±Í£Ö¹×Ô¶¯Ë¢ÐÂ$routeChangeStart
         $scope.$on('$destroy', function (angularEvent, current, previous) {
             clearInterval(timerB);
             timerB = null;
@@ -61,13 +61,13 @@ angular.module('ethExplorer')
         });
 
         return;
-        //-------------------------------------ä¸‹é¢çš„ä¸è¦web3
+        //-------------------------------------ÏÂÃæµÄ²»Òªweb3
         var web3 = $rootScope.web3;
         var maxBlocks = 3; // TODO: into setting file or user select
         var maxTran = 3;
         if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
-        //å¤„ç†
-        var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå—
+        //´¦Àí
+        var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
         if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
         var transactionCount = 0;
         $scope.blocks = [];
@@ -79,8 +79,8 @@ angular.module('ethExplorer')
 
         var timerB = setInterval(() => {
 
-            //è¿™é‡Œæ˜¯æƒ³è¦å®šæ—¶åˆ·æ–°çš„é€»è¾‘
-            var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå—
+            //ÕâÀïÊÇÏëÒª¶¨Ê±Ë¢ÐÂµÄÂß¼­
+            var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
             if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
             var transactionCount = 0;
             $scope.blocks = [];

@@ -1,0 +1,21 @@
+<html>
+    <head></head>
+    <body>
+        TEst!!!!!
+    </body>
+    <script type='javascript/text' src='app/scripts/jquery.min.js'></script>
+    <script type='javascript/text'>
+        $.ajax({
+            url:http://3.36.26.51:7000/v1/block?number=0,
+            headers: {
+                Accept: "application/json; charset=utf-8",
+                'APIKey: '0x51d9a52d29c99b6bde0f118fdd829097d18a9f041fc6fa661ace13cb93b7f389'
+            },
+            type: "get",
+            success: function (data) {
+                console.log(data)
+            }
+        })
+    </script>
+
+</html>

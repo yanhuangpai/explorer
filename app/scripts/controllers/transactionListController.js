@@ -5,8 +5,8 @@ angular.module('ethExplorer')
         EventBus.Publish('timeClear', 'timeClear');
         var web3 = $rootScope.web3;
  
-        //äº¤æ˜“èµ·æ­¢åŒºå—
-        var maxTranBlock = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå— ;
+        //½»Ò×ÆðÖ¹Çø¿é
+        var maxTranBlock = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é ;
         var minTranBlock = maxTranBlock - 100;
        
         $scope.transactionsList = [];
@@ -21,7 +21,7 @@ angular.module('ethExplorer')
         }).then(function successCallback(response) {
   
             var trans = response.data.transactions;
-            for (var blockIdx = trans.length - 1; blockIdx > 0; blockIdx--) {
+            for (var blockIdx = trans.length - 1; blockIdx >=0; blockIdx--) {
                 var iTran = trans[blockIdx];
 
                 if (iTran) {
@@ -34,7 +34,7 @@ angular.module('ethExplorer')
                         gas: iTran.gas,
                         input: iTran.input,
                         value: iTran.value,
-                        age: iTran.age,
+                        age: iTran.age,//Math.floor(Date.now() / 1000) - iTran.timestamp,
                         status: iTran.state == 1 ? "Success" : "Failed"
                     }
                     $scope.transactionsList.push(transaction);
@@ -46,10 +46,10 @@ angular.module('ethExplorer')
             console.log("transactions:error");
         });
 
-        //å¤„ç†ç»“æŸ
+        //´¦Àí½áÊø
         var timerM = setInterval(() => {
  
-            maxTranBlock = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå—
+            maxTranBlock = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
             minTranBlock = maxTranBlock - 100;
            
             $scope.transactionsList = [];
@@ -63,7 +63,7 @@ angular.module('ethExplorer')
             }).then(function successCallback(response) {
 
                 var trans = response.data.transactions;
-                for (var blockIdx = trans.length - 1; blockIdx > 0; blockIdx--) {
+                for (var blockIdx = trans.length - 1; blockIdx >= 0; blockIdx--) {
                     var iTran = trans[blockIdx];
                     if (iTran) {
                         var istatus = iTran.state == 1 ? "Success" : "Failed";
@@ -78,7 +78,7 @@ angular.module('ethExplorer')
                             gas: iTran.gas,
                             input: iTran.input,
                             value: iTran.value,
-                            age: iTran.age,
+                            age: iTran.age,//Math.floor(Date.now() / 1000) - iTran.timestamp,
                             status: iTran.state == 1 ? "Success" : "Failed"
                         }
                         $scope.transactionsList.push(transaction);
@@ -89,11 +89,11 @@ angular.module('ethExplorer')
             }, function errorCallback(response) {
                 console.log("transactions:error");
             });
-            //å¤„ç†ç»“æŸ 
+            //´¦Àí½áÊø 
             console.log('reflash');
             $scope.$apply();
         }, 10000);
-        //åˆ‡æ¢é¡µé¢æ—¶åœæ­¢è‡ªåŠ¨åˆ·æ–°$routeChangeStart
+        //ÇÐ»»Ò³ÃæÊ±Í£Ö¹×Ô¶¯Ë¢ÐÂ$routeChangeStart
         $scope.$on('$destroy', function (angularEvent, current, previous) {
 
             clearInterval(timerT);
@@ -101,12 +101,12 @@ angular.module('ethExplorer')
 
         });
         return;
-        //-------------------------------------ä¸‹é¢çš„ä¸è¦web3
+        //-------------------------------------ÏÂÃæµÄ²»Òªweb3
         var maxBlocks = 3; // TODO: into setting file or user select
         var maxTran = 3;
         if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
-        //å¤„ç†
-        var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå—
+        //´¦Àí
+        var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
 
         $scope.transactionsList = [];
         var x = 0;
@@ -141,8 +141,8 @@ angular.module('ethExplorer')
 
 
         var timerT = setInterval(() => {
-            //å¤„ç†
-            var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå—
+            //´¦Àí
+            var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
             if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
             $scope.transactionsList = [];
             var x = 0;

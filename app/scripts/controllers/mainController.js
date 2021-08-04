@@ -1,10 +1,10 @@
 angular.module('ethExplorer').controller('mainCtrl', function ($rootScope, $scope, $http, EventBus) {
     console.log("mainCtrl");
     var web3 = $rootScope.web3;
-    //èµ·æ­¢åŒºå—
-    var maxblock = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå— 
+    //ÆğÖ¹Çø¿é
+    var maxblock = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é 
     var minBlock = maxblock - 15;
-    //äº¤æ˜“èµ·æ­¢åŒºå—
+    //½»Ò×ÆğÖ¹Çø¿é
     var maxTranBlock = maxblock;
     var minTranBlock = maxTranBlock - 100;
     $scope.blocks = [];
@@ -17,9 +17,9 @@ angular.module('ethExplorer').controller('mainCtrl', function ($rootScope, $scop
         }
     }).then(function successCallback(response) {
         var bk = response.data.blocks;
-        for (var blockIdx = bk.length-1; blockIdx > 0; blockIdx--) { 
+        for (var blockIdx = bk.length-1; blockIdx >= 0; blockIdx--) { 
             $scope.blocks.push(bk[blockIdx]); 
-            if ($scope.blocks.length > 15) break;
+        
         }
     }, function errorCallback(response) {
         console.log("Block:error");
@@ -34,9 +34,9 @@ angular.module('ethExplorer').controller('mainCtrl', function ($rootScope, $scop
     }).then(function successCallback(response) {
     
         var trans = response.data.transactions;
-        for (var blockIdx = trans.length-1; blockIdx >0; blockIdx--) {
+        for (var blockIdx = trans.length-1; blockIdx >=0; blockIdx--) {
             var iTran = trans[blockIdx]; 
-            
+          
             if (iTran) {
                 var transaction = {
                     id: iTran.hash,
@@ -47,7 +47,7 @@ angular.module('ethExplorer').controller('mainCtrl', function ($rootScope, $scop
                     gas: iTran.gas,
                     input: iTran.input,
                     value: iTran.value,
-                    age: iTran.age,
+                    age: iTran.age,// Math.floor(Date.now() / 1000) - iTran.timestamp,
                     status: iTran.state == 1 ? "Success" : "Failed"
                 }
                 $scope.transactionsList.push(transaction);
@@ -59,9 +59,9 @@ angular.module('ethExplorer').controller('mainCtrl', function ($rootScope, $scop
         console.log("transactions:error");
     });
 
-    //å¤„ç†ç»“æŸ
+    //´¦Àí½áÊø
     var timerM = setInterval(() => {
-        maxblock = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå—
+        maxblock = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
         minBlock = maxblock - 15;
         maxTranBlock = maxblock;
         minTranBlock = maxTranBlock - 100;
@@ -75,7 +75,7 @@ angular.module('ethExplorer').controller('mainCtrl', function ($rootScope, $scop
             }
         }).then(function successCallback(response) { 
             var bk = response.data.blocks;
-            for (var blockIdx = bk.length-1; blockIdx > 0; blockIdx--) {
+            for (var blockIdx = bk.length - 1; blockIdx >= 0; blockIdx--) { 
 
                 $scope.blocks.push(bk[blockIdx]);
             }
@@ -91,7 +91,7 @@ angular.module('ethExplorer').controller('mainCtrl', function ($rootScope, $scop
         }).then(function successCallback(response) {
 
             var trans = response.data.transactions;
-            for (var blockIdx = trans.length-1; blockIdx > 0; blockIdx--) {
+            for (var blockIdx = trans.length-1; blockIdx >= 0; blockIdx--) {
                 var iTran = trans[blockIdx]; 
                 if (iTran) {
                     var istatus = iTran.state == 1 ? "Success" : "Failed";
@@ -106,7 +106,7 @@ angular.module('ethExplorer').controller('mainCtrl', function ($rootScope, $scop
                         gas: iTran.gas,
                         input: iTran.input,
                         value: iTran.value,
-                        age: iTran.age,
+                        age: iTran.age,//Math.floor(Date.now() / 1000) - iTran.timestamp,
                         status: iTran.state == 1 ? "Success" : "Failed"
                     }
                     $scope.transactionsList.push(transaction);
@@ -117,7 +117,7 @@ angular.module('ethExplorer').controller('mainCtrl', function ($rootScope, $scop
         }, function errorCallback(response) {
             console.log("transactions:error");
         });
-        //å¤„ç†ç»“æŸ 
+        //´¦Àí½áÊø 
         console.log('reflash');
         $scope.$apply();
     }, 10000);
@@ -128,7 +128,7 @@ angular.module('ethExplorer').controller('mainCtrl', function ($rootScope, $scop
         timerM = null;
 
     }
-    //åˆ‡æ¢é¡µé¢æ—¶åœæ­¢è‡ªåŠ¨åˆ·æ–°$routeChangeStart
+    //ÇĞ»»Ò³ÃæÊ±Í£Ö¹×Ô¶¯Ë¢ĞÂ$routeChangeStart
     $scope.$on('$destroy', function (angularEvent, current, previous) {
         clearInterval(timerM);
         timerM = null;
@@ -136,12 +136,12 @@ angular.module('ethExplorer').controller('mainCtrl', function ($rootScope, $scop
     });
 
     return;
-    //-------------------------------------ä¸‹é¢çš„ä¸è¦web3
+    //-------------------------------------ÏÂÃæµÄ²»Òªweb3
     var web3 = $rootScope.web3;
     var maxBlocks = 3; // TODO: into setting file or user select
     var maxTran = 3;
-    //å¤„ç†å¼€å§‹
-    var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå—
+    //´¦Àí¿ªÊ¼
+    var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
     if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
 
     $scope.transactionsList = [];
@@ -177,10 +177,10 @@ angular.module('ethExplorer').controller('mainCtrl', function ($rootScope, $scop
             }
         }
     }
-    //å¤„ç†ç»“æŸ
+    //´¦Àí½áÊø
     var timerM = setInterval(() => {
-        //å¤„ç†å¼€å§‹
-        var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //å½“å‰åŒºå—
+        //´¦Àí¿ªÊ¼
+        var blockNum = $scope.blockNum = parseInt(web3.eth.blockNumber, 10); //µ±Ç°Çø¿é
         if (maxBlocks > blockNum) { maxBlocks = blockNum + 1; }
         $scope.blocks = [];
         $scope.transactionsList = [];
@@ -217,7 +217,7 @@ angular.module('ethExplorer').controller('mainCtrl', function ($rootScope, $scop
                 }
             }
         }
-        //å¤„ç†ç»“æŸ 
+        //´¦Àí½áÊø 
         console.log('reflash');
         $scope.$apply();
     }, 10000);
