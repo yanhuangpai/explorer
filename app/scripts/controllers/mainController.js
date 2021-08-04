@@ -1,5 +1,5 @@
 angular.module('ethExplorer').controller('mainCtrl', function ($rootScope, $scope, $http, EventBus) {
-    console.log("mainCtrl");
+ 
     var web3 = $rootScope.web3;
     //起止区块
     var maxblock = parseInt(web3.eth.blockNumber, 10); //当前区块 
