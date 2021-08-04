@@ -92,7 +92,7 @@ angular.module('ethExplorer')
             //处理结束 
             console.log('reflash');
             $scope.$apply();
-        }, 10000);
+        },60000);
         //切换页面时停止自动刷新$routeChangeStart
         $scope.$on('$destroy', function (angularEvent, current, previous) {
 
